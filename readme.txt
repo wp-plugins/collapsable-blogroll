@@ -16,6 +16,6 @@ can be collapsed. No extra database table is needed. You can add new links as yo
 
 1. Copy plugin contents to /wp-content/plugins/collapsable-blogroll
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Put `<!--catlinkspage-->` in the place (page or post) where the blogroll should appear.
+3. Put <!--catlinkspage--> in the place (page or post) where the blogroll should appear.
 
 == Frequently Asked Questions ==
