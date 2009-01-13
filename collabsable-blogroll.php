@@ -2,7 +2,7 @@
 /*
 Plugin Name: Collapsable blogroll
 Plugin URI: 
-Description:  Output links seperated by categories onto a static page (Based on Links Page (http://www.asymptomatic.net/wp-hacks) by Owen Winkler and on Categorical Links Page (http://www.alucinari.net) by Jeremy Albrecht)
+Description:  Output the built-in blogroll onto a static page. The categories can be collapsed.
 Version: 0.1
 Author: Romain Schmitz
 Author URI: http://slopjong.de
@@ -27,6 +27,219 @@ Enjoy!
 
 define('LINKSPAGE_FOLDER', dirname(plugin_basename(__FILE__)));
 define('LINKSPAGE_URLPATH', get_option('siteurl').'/wp-content/plugins/' . LINKSPAGE_FOLDER.'/');
+
+/****************************************************************
+*** Backend
+****************************************************************/
+
+function collroll_menu()
+{   
+	if ( $_GET['page'] == "collapsable-blogroll" ) 
+	{
+		wp_register_script('cp_prototype', LINKSPAGE_URLPATH . 'colorpicker/refresh_web/prototype.js', array(), '1.6');
+		wp_enqueue_script('cp_prototype');
+		
+		wp_register_script('cp_colorMethods', LINKSPAGE_URLPATH . 'colorpicker/refresh_web/colorpicker/ColorMethods.js');
+		wp_enqueue_script('cp_colorMethods');
+		
+		wp_register_script('cp_colorValuePicker', LINKSPAGE_URLPATH . 'colorpicker/refresh_web/colorpicker/ColorValuePicker.js');
+		wp_enqueue_script('cp_colorValuePicker');
+	
+		wp_register_script('cp_slider', LINKSPAGE_URLPATH . 'colorpicker/refresh_web/colorpicker/Slider.js');
+		wp_enqueue_script('cp_slider');
+		
+		wp_register_script('cp_colorPicker', LINKSPAGE_URLPATH . 'colorpicker/refresh_web/colorpicker/ColorPicker.js');
+		wp_enqueue_script('cp_colorPicker');			
+	}
+	
+	if (function_exists('add_submenu_page'))
+        add_submenu_page(/*collroll_getTarget()*/'options-general.php', 'Collapsing Blogroll', 'Collapsing Blogroll', 5, "collapsable-blogroll", 'collroll');
+}
+
+//Switch page target depending on version
+function collroll_getTarget() 
+{
+	global $wp_version;
+	if (version_compare($wp_version, '2.6.5', '>'))
+		return "link-manager.php";
+	else
+		return "edit.php";
+}
+
+function collroll()
+{
+?>
+	<div class="wrap">
+		<h2>Collapsible blogroll</h2>
+		
+		<p>
+			<table>
+				<tr>
+					<td valign="top">
+						<div id="cp1_ColorMap"></div>
+					</td>
+					<td valign="top">
+						<div id="cp1_ColorBar"></div>
+					</td>
+		
+					<td valign="top">
+		
+						<table>
+							<tr>
+								<td colspan="3">
+									<div id="cp1_Preview" style="background-color: #fff; width: 60px; height: 60px; padding: 0; margin: 0; border: solid 1px #000;">
+										<br />
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<input type="radio" id="cp1_HueRadio" name="cp1_Mode" value="0" />
+								</td>
+								<td>
+									<label for="cp1_HueRadio">H:</label>
+								</td>
+								<td>
+									<input type="text" id="cp1_Hue" value="0" style="width: 40px;" /> &deg;
+								</td>
+							</tr>
+		
+							<tr>
+								<td>
+									<input type="radio" id="cp1_SaturationRadio" name="cp1_Mode" value="1" />
+								</td>
+								<td>
+									<label for="cp1_SaturationRadio">S:</label>
+								</td>
+								<td>
+									<input type="text" id="cp1_Saturation" value="100" style="width: 40px;" /> %
+								</td>
+							</tr>
+		
+							<tr>
+								<td>
+									<input type="radio" id="cp1_BrightnessRadio" name="cp1_Mode" value="2" />
+								</td>
+								<td>
+									<label for="cp1_BrightnessRadio">B:</label>
+								</td>
+								<td>
+									<input type="text" id="cp1_Brightness" value="100" style="width: 40px;" /> %
+								</td>
+							</tr>
+		
+							<tr>
+								<td colspan="3" height="5">
+		
+								</td>
+							</tr>
+		
+							<tr>
+								<td>
+									<input type="radio" id="cp1_RedRadio" name="cp1_Mode" value="r" />
+								</td>
+								<td>
+									<label for="cp1_RedRadio">R:</label>
+								</td>
+								<td>
+									<input type="text" id="cp1_Red" value="255" style="width: 40px;" />
+								</td>
+							</tr>
+		
+							<tr>
+								<td>
+									<input type="radio" id="cp1_GreenRadio" name="cp1_Mode" value="g" />
+								</td>
+								<td>
+									<label for="cp1_GreenRadio">G:</label>
+								</td>
+								<td>
+									<input type="text" id="cp1_Green" value="0" style="width: 40px;" />
+								</td>
+							</tr>
+		
+							<tr>
+								<td>
+									<input type="radio" id="cp1_BlueRadio" name="cp1_Mode" value="b" />
+								</td>
+								<td>
+									<label for="cp1_BlueRadio">B:</label>
+								</td>
+								<td>
+									<input type="text" id="cp1_Blue" value="0" style="width: 40px;" />
+								</td>
+							</tr>
+		
+		
+							<tr>
+								<td>
+									#:
+								</td>
+								<td colspan="2">
+									<input type="text" id="cp1_Hex" value="FF0000" style="width: 60px;" />
+								</td>
+							</tr>
+		
+						</table>
+					</td>
+				</tr>
+			</table>
+			
+		
+			<div style="display:none;">
+			
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/rangearrows.gif" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/mappoint.gif" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/bar-saturation.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/bar-brightness.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/bar-blue-tl.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/bar-blue-tr.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/bar-blue-bl.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/bar-blue-br.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/bar-red-tl.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/bar-red-tr.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/bar-red-bl.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/bar-red-br.png" />	
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/bar-green-tl.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/bar-green-tr.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/bar-green-bl.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/bar-green-br.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/map-red-max.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/map-red-min.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/map-green-max.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/map-green-min.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/map-blue-max.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/map-blue-min.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/map-saturation.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/map-saturation-overlay.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/map-brightness.png" />
+				<img src="<?php echo LINKSPAGE_URLPATH; ?>colorpicker/colorpicker/images/map-hue.png" />
+						
+			</div>
+			
+			<script type="text/javascript">
+			
+			Event.observe(window,'load',function() {
+				cp1 = new Refresh.Web.ColorPicker('cp1',{startHex: 'ffcc00', startMode:'s'});
+			});
+			
+			
+			</script>
+		</p>
+	
+	</div>
+<?php
+}
+
+
+/*-----------------------------------------------------*/
+add_action('admin_menu', 'collroll_menu');
+/*-----------------------------------------------------*/
+
+
+/****************************************************************
+*** FRONTEND
+****************************************************************/
 
 function catlinks_page_callback()
 {
@@ -119,7 +332,11 @@ function catlinks_header()
 	';
 }
 
+/*-----------------------------------------------------*/
+
 add_action('wp_head', 'catlinks_header', 1);
 add_filter('the_content', 'catlinks_page');
+
+/*-----------------------------------------------------*/
 
 ?>

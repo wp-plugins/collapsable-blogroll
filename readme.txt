@@ -1,6 +1,6 @@
 === Plugin Name ===
 Contributors: mcosx
-Tags: collabsable, blogroll, links
+Tags: collapsing, collapsible blogroll, links, blogroll
 Requires at least: 2.7
 Tested up to: 2.7
 Stable tag: 0.1
@@ -21,3 +21,5 @@ This plugin is based on Categorical Links Page (http://www.alucinari.net) by Jer
 3. Put <!--catlinkspage--> in the place (page or post) where the blogroll should appear.
 
 == Frequently Asked Questions ==
+
+== Screenshots ==
