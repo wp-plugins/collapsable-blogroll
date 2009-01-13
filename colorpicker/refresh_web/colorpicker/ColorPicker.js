@@ -9,7 +9,7 @@ if (!Refresh.Web) Refresh.Web = {};
 Refresh.Web.DefaultColorPickerSettings = {
 	startMode:'h',
 	startHex:'ff0000',
-	clientFilesPath: 'http://test.slopjong.de/wp-content/plugins/trunk/colorpicker/refresh_web/colorpicker/images/'
+	clientFilesPath: '/wp-content/plugins/collroll/colorpicker/refresh_web/colorpicker/images/'
 };
 
 Refresh.Web.ColorPicker = Class.create();

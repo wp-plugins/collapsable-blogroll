@@ -13,7 +13,7 @@ Refresh.Web.DefaultSliderSettings = {
 	xMaxValue: 100,
 	yMinValue: 0,
 	yMaxValue: 100,
-	arrowImage: 'wp-content/plugins/trunk/colorpicker/refresh_web/colorpicker/images/rangearrows.gif'
+	arrowImage: 'wp-content/plugins/collroll/colorpicker/refresh_web/colorpicker/images/rangearrows.gif'
 }
 
 
