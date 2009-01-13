@@ -32,6 +32,8 @@ define('LINKSPAGE_URLPATH', get_option('siteurl').'/wp-content/plugins/' . LINKS
 *** Backend
 ****************************************************************/
 
+
+
 function collroll_menu()
 {   
 	if ( $_GET['page'] == "collapsable-blogroll" ) 
@@ -67,12 +69,43 @@ function collroll_getTarget()
 }
 
 function collroll()
-{
+{	
+	$options = $newoptions = get_option('collroll');
+	$color = $options['color'];
+	$msg = '';
+	
+	if ( $_POST['menu-submit'] ) 
+	{
+	    $newoptions['color'] = $_POST['color'];
+	}
+	
+	if ( $options != $newoptions ) 
+	{
+	    $options = $newoptions;
+	    $color = $options['color'];
+	    update_option('collroll', $options);
+	} 
+	else
+	{
+		// I want to output a message box that disappears 
+		//$msg = '<div id="message">Color not changed.</div>';
+	}
+	
+	if ( empty($color) )
+		$color = 'ff0000';
+
 ?>
 	<div class="wrap">
+		
+		<?php echo $msg; ?>
+
 		<h2>Collapsible blogroll</h2>
 		
 		<p>
+		Select the category background color:
+		
+		<form id="colorform" action="options-general.php?page=collapsable-blogroll" method="post">
+		
 			<table>
 				<tr>
 					<td valign="top">
@@ -176,7 +209,8 @@ function collroll()
 									#:
 								</td>
 								<td colspan="2">
-									<input type="text" id="cp1_Hex" value="FF0000" style="width: 60px;" />
+									<!--<input type="hidden" name="page" value="collapsable-blogroll" />-->
+									<input type="text" id="cp1_Hex" name="color" value="FF0000" style="width: 60px;" />
 								</td>
 							</tr>
 		
@@ -184,6 +218,9 @@ function collroll()
 					</td>
 				</tr>
 			</table>
+			
+		<input type="submit" name="menu-submit" class="button-primary" value="Save Changes" />
+		</form>
 			
 		
 			<div style="display:none;">
@@ -220,7 +257,7 @@ function collroll()
 			<script type="text/javascript">
 			
 			Event.observe(window,'load',function() {
-				cp1 = new Refresh.Web.ColorPicker('cp1',{startHex: 'ffcc00', startMode:'s'});
+				cp1 = new Refresh.Web.ColorPicker('cp1',{startHex: '<?php echo $color; ?>', startMode:'s'});
 			});
 			
 			
@@ -311,8 +348,19 @@ function catlinks_page($content)
 
 function catlinks_header()
 {
+	$options = get_option('collroll');
+	$color = $options['color'];
+	if (empty($color))
+		$color = "eeeeee";
+		
 	echo "\n".'<style type="text/css" media="screen">@import "'.LINKSPAGE_URLPATH.'style.css";</style>';
 	
+	echo "\n".'
+		<style tyle="text/css">
+		  .clplinkcategory { background-color: #'. 	$color .'; }
+		</style>
+		';
+
 	echo '
 	<script type="text/javascript">
 	<!--
