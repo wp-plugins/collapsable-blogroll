@@ -32,41 +32,6 @@ function catlinks_page_callback()
 {
 
 	$output = '';
-    
-    // This was the original code.
-	/*
-	global $wpdb;
-	$linkcats = $wpdb->get_results("SELECT DISTINCT $wpdb->terms.term_id AS cat_id, name AS cat_name FROM $wpdb->terms INNER JOIN $wpdb->term_taxonomy ON $wpdb->terms.term_id = $wpdb->term_taxonomy.term_id AND $wpdb->term_taxonomy.taxonomy = 'link_category'");
-
-
-	$output .= '<div class="catlinkspage">';
-	
-	foreach($linkcats as $cat)
-	{
-		$links = get_links($cat->cat_id, '<li class="clplink">', '</li>', '<br /> &gt;&gt; ', true, 'name', true, false, -1, true, false);
-		
-		if($links)
-		{
-		  $divid = 'lp_cat' . $cat->cat_id;
-		  
-		  $output .= '<a style="text-decoration:none;" onclick="switchMenu(\''. $divid .'\');"><h4 class="clplinkcategory">' . $cat->cat_name . '</h4></a>';
-		  $output .= '<div id="'. $divid .'" style="display:none;">';
-		  $output .= '<ul class="clplinklist"> ';
-		  $output .= $links;
-		  $output .= '</ul>';
-  		  $output .= '</div>';
-		}
-		else
-		{
-		  $output .= '';
-		}
-	}
-	
-	$output .= '</div>';
-	
-    
-	return $output;
-	//*/
 	
 	// This variable isn't used yet. There should be the possibility to save settings in the options table
 	// of the wordpress database
