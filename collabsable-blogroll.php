@@ -4,7 +4,7 @@ Plugin Name: Collapsable blogroll
 Plugin URI: 
 Description:  Output links seperated by categories onto a static page (Based on Links Page (http://www.asymptomatic.net/wp-hacks) by Owen Winkler and on Categorical Links Page (http://www.alucinari.net) by Jeremy Albrecht)
 Version: 0.1
-Author: Slopjong
+Author: Romain Schmitz
 Author URI: http://slopjong.de
 */
 ?>
@@ -98,7 +98,7 @@ function catlinks_page($content)
 
 function catlinks_header()
 {
-	echo "\n".'<style type="text/css" media="screen">@import "'.LINKSPAGE_URLPATH.'css/style.css";</style>';
+	echo "\n".'<style type="text/css" media="screen">@import "'.LINKSPAGE_URLPATH.'style.css";</style>';
 	
 	echo '
 	<script type="text/javascript">
