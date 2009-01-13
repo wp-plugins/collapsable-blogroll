@@ -16,9 +16,9 @@ This plugin is based on Categorical Links Page (http://www.alucinari.net) by Jer
 
 == Installation ==
 
-1. Copy plugin contents to /wp-content/plugins/collapsable-blogroll
+1. Copy plugin contents to /wp-content/plugins/collroll. NOTE: Don't forget to rename the plugin folder from collapsable-blogroll to collroll. The plugin won't work otherwise.
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Put <!--catlinkspage--> in the place (page or post) where the blogroll should appear.
+3. Put <!--catlinkspage--> in your post or on a page where the blogroll should appear.
 
 == Frequently Asked Questions ==
 
