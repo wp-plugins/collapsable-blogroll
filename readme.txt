@@ -23,3 +23,5 @@ This plugin is based on Categorical Links Page (http://www.alucinari.net) by Jer
 == Frequently Asked Questions ==
 
 == Screenshots ==
+
+1. This shows the color picker to set the background color for the category titles.
